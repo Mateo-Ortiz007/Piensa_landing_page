@@ -1,0 +1,41 @@
+﻿<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Quiz Vegetales</title>
+    <link rel="stylesheet" href="juego2.css" />
+  
+  </head>
+  <body>
+    <div class="quiz-container">
+      <div class="quiz-header">
+        <div class="header-text">
+          <h1>Quiz: Vegetales</h1>
+          <p>Aprende sobre los vegetales nutritivos de Ecuador</p>
+        </div>
+        <div class="header-img">
+          <img
+            src="../assets/captura_proyecto3.PNG"
+            alt="Vegetales de Ecuador"
+          />
+        </div>
+      </div>
+
+      <div class="quiz-box">
+        <p class="question-num" id="qnum"></p>
+        <div class="question" id="question"></div>
+        <div class="answers" id="answers"></div>
+        <div class="controls">
+          <button id="nextBtn" class="btn-primary">Siguiente →</button>
+          <button id="restartBtn" class="btn-secondary">Reiniciar</button>
+          <a href="juegos_page.html" class="back-link">← Volver a Juegos</a>
+        </div>
+        <p id="score" class="score"></p>
+      </div>
+    </div>
+
+    <script src="juego2.js"></script>
+    </script>
+  </body>
+</html>
