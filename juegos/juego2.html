@@ -3,16 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Quiz Vegetales</title>
+    <title>Memoria de Vegetales</title>
     <link rel="stylesheet" href="juego2.css" />
-  
   </head>
   <body>
-    <div class="quiz-container">
-      <div class="quiz-header">
+    <div class="game-container">
+      <div class="game-header">
         <div class="header-text">
-          <h1>Quiz: Vegetales</h1>
-          <p>Aprende sobre los vegetales nutritivos de Ecuador</p>
+          <h1>🧠 Memoria: Vegetales</h1>
+          <p>Encuentra las parejas: une cada vegetal con su nombre antes de que se acabe el reto.</p>
         </div>
         <div class="header-img">
           <img
@@ -22,20 +21,27 @@
         </div>
       </div>
 
-      <div class="quiz-box">
-        <p class="question-num" id="qnum"></p>
-        <div class="question" id="question"></div>
-        <div class="answers" id="answers"></div>
+      <div class="game-box">
+        <div class="stats">
+          <div class="stat"><span class="stat-label">Movimientos</span><span id="moves">0</span></div>
+          <div class="stat"><span class="stat-label">Parejas</span><span id="pairs">0 / 6</span></div>
+          <div class="stat"><span class="stat-label">Tiempo</span><span id="timer">0s</span></div>
+        </div>
+
+        <div class="board" id="board"></div>
+
+        <div class="win-message" id="winMessage">
+          <h2>🎉 ¡Lo lograste!</h2>
+          <p id="winText"></p>
+        </div>
+
         <div class="controls">
-          <button id="nextBtn" class="btn-primary">Siguiente →</button>
-          <button id="restartBtn" class="btn-secondary">Reiniciar</button>
+          <button id="restartBtn" class="btn-primary">🔄 Reiniciar</button>
           <a href="juegos_page.html" class="back-link">← Volver a Juegos</a>
         </div>
-        <p id="score" class="score"></p>
       </div>
     </div>
 
     <script src="juego2.js"></script>
-    </script>
   </body>
 </html>

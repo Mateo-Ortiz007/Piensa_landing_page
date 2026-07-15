@@ -3,31 +3,53 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Quiz Plantas del Bosque</title>
+    <title>Clasifica el Bosque</title>
     <link rel="stylesheet" href="juego3.css" />
   </head>
   <body>
-    <div class="quiz-container">
-      <div class="quiz-header">
+    <div class="game-container">
+      <div class="game-header">
         <div class="header-text">
-          <h1>Quiz: Plantas del Bosque</h1>
-          <p>Descubre la biodiversidad de los bosques ecuatorianos</p>
+          <h1>🌳 Clasifica el Bosque</h1>
+          <p>Arrastra cada especie a su grupo correcto. ¡Aprende la biodiversidad del bosque jugando!</p>
         </div>
         <div class="header-img">
           <img src="../assets/captura_proyecto4.PNG" alt="Plantas del bosque" />
         </div>
       </div>
 
-      <div class="quiz-box">
-        <p class="question-num" id="qnum"></p>
-        <div class="question" id="question"></div>
-        <div class="answers" id="answers"></div>
+      <div class="game-box">
+        <div class="stats">
+          <div class="stat"><span class="stat-label">Aciertos</span><span id="score">0</span></div>
+          <div class="stat"><span class="stat-label">Restantes</span><span id="remaining">0</span></div>
+        </div>
+
+        <div class="pool" id="pool"></div>
+
+        <div class="bins" id="bins">
+          <div class="bin" data-cat="arbol">
+            <div class="bin-title">🌲 Árboles</div>
+            <div class="bin-drop" data-cat="arbol"></div>
+          </div>
+          <div class="bin" data-cat="epifita">
+            <div class="bin-title">🌸 Epífitas</div>
+            <div class="bin-drop" data-cat="epifita"></div>
+          </div>
+          <div class="bin" data-cat="otra">
+            <div class="bin-title">🌿 Palmeras y trepadoras</div>
+            <div class="bin-drop" data-cat="otra"></div>
+          </div>
+        </div>
+
+        <div class="win-message" id="winMessage">
+          <h2>🎉 ¡Bosque clasificado!</h2>
+          <p id="winText"></p>
+        </div>
+
         <div class="controls">
-          <button id="nextBtn" class="btn-primary">Siguiente →</button>
-          <button id="restartBtn" class="btn-secondary">Reiniciar</button>
+          <button id="restartBtn" class="btn-primary">🔄 Reiniciar</button>
           <a href="juegos_page.html" class="back-link">← Volver a Juegos</a>
         </div>
-        <p id="score" class="score"></p>
       </div>
     </div>
 

@@ -1,91 +1,137 @@
-const questions = [
-  {
-    q: "¿Qué vegetal es una buena fuente de vitamina A y favorece la salud visual?",
-    a: ["Lechuga", "Zanahoria", "Pepino", "Aguacate"],
-    correct: 1,
-  },
-  {
-    q: "¿Cuál de estos es un alimento básico rico en carbohidratos?",
-    a: ["Maíz", "Espinaca", "Tomate", "Cebolla"],
-    correct: 0,
-  },
-  {
-    q: "¿Qué vegetal es alto en agua y suele consumirse para hidratar?",
-    a: ["Pepino", "Pimiento", "Papa", "Aguacate"],
-    correct: 0,
-  },
-  {
-    q: "¿Cuál es rico en grasas saludables?",
-    a: ["Tomate", "Aguacate", "Zanahoria", "Maíz"],
-    correct: 1,
-  },
-  {
-    q: "¿Qué vegetal es conocido por su contenido en hierro y vitaminas A y C?",
-    a: ["Espinaca", "Lechuga", "Pepino", "Papa"],
-    correct: 0,
-  },
-  {
-    q: "¿Cuál se usa frecuentemente para dar sabor y tiene compuestos sulfurados?",
-    a: ["Cebolla", "Zanahoria", "Pepino", "Espinaca"],
-    correct: 0,
-  },
-  {
-    q: "¿Cuál es una excelente fuente de vitamina C entre estos?",
-    a: ["Pimiento", "Papa", "Maíz", "Lechuga"],
-    correct: 0,
-  },
-  {
-    q: "¿Cuál de estos se consume en muchas formas: hervida, frita o en puré?",
-    a: ["Papa", "Tomate", "Pepino", "Espinaca"],
-    correct: 0,
-  },
+// Juego de memoria: emparejar cada vegetal (emoji) con su nombre.
+const vegetales = [
+  { emoji: "🥕", nombre: "Zanahoria" },
+  { emoji: "🌽", nombre: "Maíz" },
+  { emoji: "🥒", nombre: "Pepino" },
+  { emoji: "🥑", nombre: "Aguacate" },
+  { emoji: "🍅", nombre: "Tomate" },
+  { emoji: "🥔", nombre: "Papa" },
 ];
-let index = 0,
-  score = 0;
-const qNum = document.getElementById("qnum");
-const qBox = document.getElementById("question");
-const ansBox = document.getElementById("answers");
-const scoreP = document.getElementById("score");
+
+const board = document.getElementById("board");
+const movesEl = document.getElementById("moves");
+const pairsEl = document.getElementById("pairs");
+const timerEl = document.getElementById("timer");
+const winMessage = document.getElementById("winMessage");
+const winText = document.getElementById("winText");
+
+let cards = [];
+let flipped = [];
+let moves = 0;
+let matched = 0;
+let lock = false;
+let timer = null;
+let seconds = 0;
+let started = false;
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function buildDeck() {
+  const deck = [];
+  vegetales.forEach((v, i) => {
+    deck.push({ pairId: i, type: "emoji", content: v.emoji });
+    deck.push({ pairId: i, type: "text", content: v.nombre });
+  });
+  return shuffle(deck);
+}
+
+function startTimer() {
+  if (started) return;
+  started = true;
+  timer = setInterval(() => {
+    seconds++;
+    timerEl.textContent = `${seconds}s`;
+  }, 1000);
+}
 
 function render() {
-  const item = questions[index];
-  qNum.textContent = `Pregunta ${index + 1} de ${questions.length}`;
-  qBox.textContent = item.q;
-  ansBox.innerHTML = item.a
-    .map((opt, i) => `<div class="answer" data-i="${i}">${opt}</div>`)
+  cards = buildDeck();
+  board.innerHTML = cards
+    .map(
+      (c, i) => `
+      <div class="card" data-index="${i}" data-pair="${c.pairId}">
+        <div class="card-face card-front">?</div>
+        <div class="card-face card-back${c.type === "text" ? " text" : ""}">${c.content}</div>
+      </div>`
+    )
     .join("");
-  document
-    .querySelectorAll(".answer")
-    .forEach((el) => el.addEventListener("click", onAnswer));
-  scoreP.textContent = `Puntaje: ${score} / ${questions.length}`;
+  board.querySelectorAll(".card").forEach((el) =>
+    el.addEventListener("click", onFlip)
+  );
 }
 
-function onAnswer(e) {
-  const chosen = Number(e.currentTarget.dataset.i);
-  const correct = questions[index].correct;
-  if (chosen === correct) {
-    e.currentTarget.classList.add("correct");
-    score++;
-  } else {
-    e.currentTarget.classList.add("wrong");
-    document.querySelectorAll(".answer")[correct].classList.add("correct");
+function onFlip(e) {
+  if (lock) return;
+  const card = e.currentTarget;
+  if (card.classList.contains("flipped") || card.classList.contains("matched"))
+    return;
+
+  startTimer();
+  card.classList.add("flipped");
+  flipped.push(card);
+
+  if (flipped.length === 2) {
+    moves++;
+    movesEl.textContent = moves;
+    checkMatch();
   }
-  document
-    .querySelectorAll(".answer")
-    .forEach((a) => a.removeEventListener("click", onAnswer));
 }
 
-document.getElementById("nextBtn").addEventListener("click", () => {
-  if (index < questions.length - 1) {
-    index++;
-    render();
+function checkMatch() {
+  lock = true;
+  const [a, b] = flipped;
+  const isMatch = a.dataset.pair === b.dataset.pair;
+
+  if (isMatch) {
+    setTimeout(() => {
+      a.classList.add("matched");
+      b.classList.add("matched");
+      flipped = [];
+      lock = false;
+      matched++;
+      pairsEl.textContent = `${matched} / ${vegetales.length}`;
+      if (matched === vegetales.length) win();
+    }, 400);
   } else {
-    scoreP.textContent = `✓ Terminado — Puntaje final: ${score} / ${questions.length}`;
+    a.classList.add("wrong");
+    b.classList.add("wrong");
+    setTimeout(() => {
+      a.classList.remove("flipped", "wrong");
+      b.classList.remove("flipped", "wrong");
+      flipped = [];
+      lock = false;
+    }, 800);
   }
-});
-document.getElementById("restartBtn").addEventListener("click", () => {
-  index = 0;
-  score = 0;
+}
+
+function win() {
+  clearInterval(timer);
+  winText.textContent = `Completaste las ${vegetales.length} parejas en ${moves} movimientos y ${seconds} segundos.`;
+  winMessage.classList.add("show");
+}
+
+function reset() {
+  clearInterval(timer);
+  moves = 0;
+  matched = 0;
+  seconds = 0;
+  started = false;
+  flipped = [];
+  lock = false;
+  movesEl.textContent = "0";
+  pairsEl.textContent = `0 / ${vegetales.length}`;
+  timerEl.textContent = "0s";
+  winMessage.classList.remove("show");
   render();
-});
+}
+
+document.getElementById("restartBtn").addEventListener("click", reset);
+
+pairsEl.textContent = `0 / ${vegetales.length}`;
 render();

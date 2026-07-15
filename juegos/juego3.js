@@ -1,91 +1,127 @@
-const questions = [
-  {
-    q: "¿Cuál es un árbol de madera dura conocido por sus flores amarillas vistosas?",
-    a: ["Cedro", "Guayacán", "Caoba", "Laurel"],
-    correct: 1,
-  },
-  {
-    q: "¿Qué árbol es importante fijador de nitrógeno en el bosque?",
-    a: ["Laurel", "Caoba", "Cedro", "Guayacán"],
-    correct: 0,
-  },
-  {
-    q: "¿Cuál es el árbol más majestuoso que domina el dosel de bosques primarios?",
-    a: ["Cedro", "Caoba", "Guayacán", "Laurel"],
-    correct: 1,
-  },
-  {
-    q: "¿Qué palmera produce semillas duras parecidas al marfil?",
-    a: ["Tagua", "Bromelía", "Helecho arborescente", "Orquídea"],
-    correct: 0,
-  },
-  {
-    q: "¿Cuál es un indicador de humedad típico de bosques nublados?",
-    a: ["Helecho arborescente", "Tagua", "Bejuco", "Cedro"],
-    correct: 0,
-  },
-  {
-    q: "¿Qué epífita recolecta agua de lluvia en sus hojas modificadas?",
-    a: ["Orquídea silvestre", "Bromelía", "Bejuco", "Árbol de lluvia"],
-    correct: 1,
-  },
-  {
-    q: "¿Cuál árbol captura humedad y regula el microclima del bosque?",
-    a: ["Caoba", "Árbol de lluvia", "Cedro", "Tagua"],
-    correct: 1,
-  },
-  {
-    q: "¿Qué enredadera leñosa conecta estratos del bosque y alimenta a monos?",
-    a: ["Orquídea", "Helecho", "Bejuco", "Bromelía"],
-    correct: 2,
-  },
+// Juego de arrastrar y soltar: clasifica especies del bosque en su grupo.
+const especies = [
+  { nombre: "Guayacán", cat: "arbol" },
+  { nombre: "Caoba", cat: "arbol" },
+  { nombre: "Cedro", cat: "arbol" },
+  { nombre: "Laurel", cat: "arbol" },
+  { nombre: "Orquídea silvestre", cat: "epifita" },
+  { nombre: "Bromelia", cat: "epifita" },
+  { nombre: "Tagua (palmera)", cat: "otra" },
+  { nombre: "Helecho arborescente", cat: "otra" },
+  { nombre: "Bejuco", cat: "otra" },
 ];
-let index = 0,
-  score = 0;
-const qNum = document.getElementById("qnum");
-const qBox = document.getElementById("question");
-const ansBox = document.getElementById("answers");
-const scoreP = document.getElementById("score");
+
+const pool = document.getElementById("pool");
+const scoreEl = document.getElementById("score");
+const remainingEl = document.getElementById("remaining");
+const winMessage = document.getElementById("winMessage");
+const winText = document.getElementById("winText");
+
+let score = 0;
+let remaining = 0;
+let selected = null; // para modo táctil (tap)
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
 
 function render() {
-  const item = questions[index];
-  qNum.textContent = `Pregunta ${index + 1} de ${questions.length}`;
-  qBox.textContent = item.q;
-  ansBox.innerHTML = item.a
-    .map((opt, i) => `<div class="answer" data-i="${i}">${opt}</div>`)
+  const deck = shuffle([...especies]);
+  pool.innerHTML = deck
+    .map(
+      (e) =>
+        `<div class="chip" draggable="true" data-cat="${e.cat}">${e.nombre}</div>`
+    )
     .join("");
-  document
-    .querySelectorAll(".answer")
-    .forEach((el) => el.addEventListener("click", onAnswer));
-  scoreP.textContent = `Puntaje: ${score} / ${questions.length}`;
+  attachChipEvents();
 }
 
-function onAnswer(e) {
-  const chosen = Number(e.currentTarget.dataset.i);
-  const correct = questions[index].correct;
-  if (chosen === correct) {
-    e.currentTarget.classList.add("correct");
+function attachChipEvents() {
+  pool.querySelectorAll(".chip").forEach((chip) => {
+    chip.addEventListener("dragstart", (ev) => {
+      chip.classList.add("dragging");
+      ev.dataTransfer.setData("text/plain", chip.dataset.cat);
+      dragCat = chip.dataset.cat;
+      dragChip = chip;
+    });
+    chip.addEventListener("dragend", () => chip.classList.remove("dragging"));
+    // modo táctil: seleccionar con tap
+    chip.addEventListener("click", () => {
+      if (selected) selected.classList.remove("dragging");
+      selected = chip;
+      chip.classList.add("dragging");
+    });
+  });
+}
+
+let dragCat = null;
+let dragChip = null;
+
+document.querySelectorAll(".bin-drop").forEach((drop) => {
+  const bin = drop.closest(".bin");
+
+  drop.addEventListener("dragover", (ev) => {
+    ev.preventDefault();
+    bin.classList.add("over");
+  });
+  drop.addEventListener("dragleave", () => bin.classList.remove("over"));
+  drop.addEventListener("drop", (ev) => {
+    ev.preventDefault();
+    bin.classList.remove("over");
+    if (dragChip) place(dragChip, bin.dataset.cat, drop);
+  });
+
+  // modo táctil: colocar el chip seleccionado
+  bin.addEventListener("click", () => {
+    if (selected) {
+      const chip = selected;
+      selected = null;
+      place(chip, bin.dataset.cat, drop);
+    }
+  });
+});
+
+function place(chip, binCat, drop) {
+  if (chip.classList.contains("correct")) return;
+  chip.classList.remove("dragging");
+
+  if (chip.dataset.cat === binCat) {
+    chip.classList.add("correct");
+    chip.setAttribute("draggable", "false");
+    drop.appendChild(chip);
     score++;
+    scoreEl.textContent = score;
+    remaining--;
+    remainingEl.textContent = remaining;
+    if (remaining === 0) win();
   } else {
-    e.currentTarget.classList.add("wrong");
-    document.querySelectorAll(".answer")[correct].classList.add("correct");
+    chip.classList.add("wrong");
+    setTimeout(() => chip.classList.remove("wrong"), 400);
   }
-  document
-    .querySelectorAll(".answer")
-    .forEach((a) => a.removeEventListener("click", onAnswer));
 }
 
-document.getElementById("nextBtn").addEventListener("click", () => {
-  if (index < questions.length - 1) {
-    index++;
-    render();
-  } else {
-    scoreP.textContent = `✓ Terminado — Puntaje final: ${score} / ${questions.length}`;
-  }
-});
-document.getElementById("restartBtn").addEventListener("click", () => {
-  index = 0;
+function win() {
+  winText.textContent = `Clasificaste correctamente las ${especies.length} especies del bosque. ¡Bien hecho!`;
+  winMessage.classList.add("show");
+}
+
+function reset() {
   score = 0;
+  remaining = especies.length;
+  selected = null;
+  scoreEl.textContent = "0";
+  remainingEl.textContent = remaining;
+  winMessage.classList.remove("show");
+  document.querySelectorAll(".bin-drop").forEach((d) => (d.innerHTML = ""));
   render();
-});
+}
+
+document.getElementById("restartBtn").addEventListener("click", reset);
+
+remaining = especies.length;
+remainingEl.textContent = remaining;
 render();
