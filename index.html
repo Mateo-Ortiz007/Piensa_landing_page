@@ -7,103 +7,148 @@
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <header class="site-header">
+    <header class="site-header" id="siteHeader">
       <div class="container header-inner">
         <div class="brand">
-          <img src="../assets/cover.png" alt="Logo Piensa" class="logo" />
+          <img src="../assets/cover.png" alt="Logo Real Forest" class="logo" />
           <a class="brand-name" href="principal_page.html">Real Forest</a>
         </div>
-        <nav class="nav">
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <nav class="nav" id="mainNav">
           <a href="principal_page.html">Inicio</a>
           <a href="../info/info.html">Info</a>
-          <a href="../juegos/juegos_page.html" class="btn-game">Juegos </a>
+          <a href="../juegos/juegos_page.html" class="btn-game">Juegos</a>
         </nav>
       </div>
     </header>
 
-    <main class="container">
+    <main>
       <section class="hero">
-        <div class="hero-copy">
-          <span class="eyebrow">REAL FOREST</span>
-          <h1>¡Bienvenido a Real Forest!</h1>
-          <p class="lead">
-            Embárcate en una misión educativa para restaurar la biodiversidad.
-            Planta, aprende y protege el ecosistema real mientras juegas.
-          </p>
-          <div class="hero-actions">
-            <a class="btn-primary" href="../juegos/juegos_page.html"
-              >COMENZAR AVENTURA</a
-            >
-            <a class="btn-secondary" href="../info/info.html"
-              >Ver información</a
-            >
-          </div>
+        <div class="hero-bg" aria-hidden="true">
+          <span class="blob blob-1"></span>
+          <span class="blob blob-2"></span>
+          <span class="leaf leaf-1">🍃</span>
+          <span class="leaf leaf-2">🌿</span>
+          <span class="leaf leaf-3">🍃</span>
+          <span class="leaf leaf-4">🌱</span>
         </div>
-        <div class="hero-card">
-          <img
-            src="../assets/captura_proyecto.PNG"
-            alt="Mascota del bosque"
-            class="hero-image"
-          />
-          <div class="hero-card-text">
-            <p class="eyebrow small">Explora el bosque</p>
-            <h3>Descubre cómo cada planta ayuda al ecosistema.</h3>
-            <p>
-              Aprende sobre plantas medicinales y vegetales mientras avanzas en
-              los juegos.
+        <div class="container hero-inner">
+          <div class="hero-copy reveal">
+            <span class="eyebrow">🌎 Proyecto educativo</span>
+            <h1>Bienvenido a <span class="grad-text">Real Forest</span></h1>
+            <p class="lead">
+              Embárcate en una misión educativa para restaurar la biodiversidad.
+              Planta, aprende y protege el ecosistema real mientras juegas.
             </p>
+            <div class="hero-actions">
+              <a class="btn-primary" href="../juegos/juegos_page.html">
+                Comenzar aventura <span class="arrow">→</span>
+              </a>
+              <a class="btn-secondary" href="../info/info.html">Ver información</a>
+            </div>
+            <div class="hero-stats">
+              <div class="stat-item">
+                <span class="stat-num" data-count="3">0</span>
+                <span class="stat-label">Juegos</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-num" data-count="20" data-suffix="+">0</span>
+                <span class="stat-label">Especies</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-num" data-count="100" data-suffix="%">0</span>
+                <span class="stat-label">Diversión</span>
+              </div>
+            </div>
+          </div>
+          <div class="hero-card reveal">
+            <div class="hero-image-wrap">
+              <img
+                src="../assets/captura_proyecto.PNG"
+                alt="Mascota del bosque"
+                class="hero-image"
+              />
+              <span class="badge-float">🌱 ¡Explora!</span>
+            </div>
+            <div class="hero-card-text">
+              <p class="eyebrow small">Explora el bosque</p>
+              <h3>Descubre cómo cada planta ayuda al ecosistema.</h3>
+              <p>
+                Aprende sobre plantas medicinales y vegetales mientras avanzas en
+                los juegos.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      <section class="enciclopedia">
-        <div class="section-header">
+      <section class="features container">
+        <div class="feature-card reveal">
+          <div class="feature-icon">🎮</div>
+          <h3>Aprende jugando</h3>
+          <p>Juegos interactivos con memoria, clasificación y trivias sobre la naturaleza.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">🌿</div>
+          <h3>Especies reales</h3>
+          <p>Plantas medicinales, vegetales y árboles nativos del bosque ecuatoriano.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">🌎</div>
+          <h3>Cuida el planeta</h3>
+          <p>Descubre por qué la biodiversidad es clave para el equilibrio del ecosistema.</p>
+        </div>
+      </section>
+
+      <section class="enciclopedia container">
+        <div class="section-header reveal">
           <div>
             <p class="eyebrow small">Enciclopedia</p>
             <h2>Enciclopedia de Plantas</h2>
           </div>
           <a class="link-more" href="../info/info.html">Ver todo →</a>
         </div>
-        <p class="section-copy">
+        <p class="section-copy reveal">
           Conoce algunas especies importantes para la vida del bosque.
         </p>
         <div class="card-grid">
-          <article class="mini-card">
-            <img
-              src="../assets/captura_proyecto2.PNG"
-              alt="Manzanilla y plantas medicinales"
-            />
+          <article class="mini-card reveal">
+            <div class="mini-img">
+              <img src="../assets/captura_proyecto2.PNG" alt="Manzanilla y plantas medicinales" />
+            </div>
             <div class="mini-body">
               <h3>Manzanilla y Hierbas</h3>
-              <p>
-                Propiedades relajantes y antiinflamatorias para infusiones
-                tradicionales.
-              </p>
+              <p>Propiedades relajantes y antiinflamatorias para infusiones tradicionales.</p>
             </div>
           </article>
-          <article class="mini-card">
-            <img
-              src="../assets/captura_proyecto3.PNG"
-              alt="Zanahoria nutritiva"
-            />
+          <article class="mini-card reveal">
+            <div class="mini-img">
+              <img src="../assets/captura_proyecto3.PNG" alt="Zanahoria nutritiva" />
+            </div>
             <div class="mini-body">
               <h3>Vegetales nutritivos</h3>
-              <p>
-                Zanahorias y pimientos que aportan vitaminas A y C para la salud
-                visual.
-              </p>
+              <p>Zanahorias y pimientos que aportan vitaminas A y C para la salud visual.</p>
             </div>
           </article>
-          <article class="mini-card">
-            <img src="../assets/captura_proyecto4.PNG" alt="Planta verde" />
+          <article class="mini-card reveal">
+            <div class="mini-img">
+              <img src="../assets/captura_proyecto4.PNG" alt="Planta verde" />
+            </div>
             <div class="mini-body">
               <h3>Plantas del bosque</h3>
-              <p>
-                Descubre cómo las plantas nativas mantienen el equilibrio del
-                ecosistema.
-              </p>
+              <p>Descubre cómo las plantas nativas mantienen el equilibrio del ecosistema.</p>
             </div>
           </article>
+        </div>
+      </section>
+
+      <section class="cta-band">
+        <div class="container cta-inner reveal">
+          <h2>¿Listo para explorar el bosque?</h2>
+          <p>Pon a prueba lo que sabes con nuestros juegos interactivos.</p>
+          <a class="btn-primary" href="../juegos/juegos_page.html">Jugar ahora <span class="arrow">→</span></a>
         </div>
       </section>
     </main>
@@ -113,5 +158,7 @@
         <p>Real Forest — Proyecto educativo sobre biodiversidad en Ecuador.</p>
       </div>
     </footer>
+
+    <script src="index.js"></script>
   </body>
 </html>

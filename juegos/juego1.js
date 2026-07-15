@@ -46,9 +46,17 @@ const qNum = document.getElementById("qnum");
 const qBox = document.getElementById("question");
 const ansBox = document.getElementById("answers");
 const scoreP = document.getElementById("score");
+const progressBar = document.getElementById("progressBar");
+
+function updateProgress() {
+  if (progressBar) {
+    progressBar.style.width = `${((index + 1) / questions.length) * 100}%`;
+  }
+}
 
 function render() {
   const item = questions[index];
+  updateProgress();
   qNum.textContent = `Pregunta ${index + 1} de ${questions.length}`;
   qBox.textContent = item.q;
   ansBox.innerHTML = item.a

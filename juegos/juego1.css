@@ -4,6 +4,9 @@
   --correct: #4ade80;
   --wrong: #ef4444;
 }
+* {
+  box-sizing: border-box;
+}
 body {
   background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
   font-family:
@@ -14,6 +17,7 @@ body {
     Roboto,
     Arial,
     sans-serif;
+  margin: 0;
 }
 .quiz-container {
   max-width: 900px;
@@ -26,11 +30,39 @@ body {
   gap: 2rem;
   align-items: center;
   margin-bottom: 2rem;
+  animation: fadeUp 0.6s ease;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(42, 125, 87, 0.12);
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
 }
 .header-text h1 {
   margin: 0;
   font-size: 2.2rem;
   color: var(--accent);
+}
+.progress {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 1.4rem;
+}
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--accent) 0%, #4ade80 100%);
+  border-radius: 999px;
+  transition: width 0.4s ease;
 }
 .header-text p {
   margin: 0.4rem 0 0;
@@ -52,6 +84,20 @@ body {
   border-radius: 20px;
   padding: 2rem;
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+  animation: fadeUp 0.6s ease 0.1s both;
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.header-img {
+  animation: fadeUp 0.6s ease 0.05s both;
 }
 .question-num {
   font-size: 0.9rem;
@@ -71,6 +117,9 @@ body {
   flex-direction: column;
   gap: 0.8rem;
 }
+.question {
+  animation: fadeUp 0.4s ease;
+}
 .answer {
   padding: 1rem 1.2rem;
   border-radius: 14px;
@@ -80,6 +129,21 @@ body {
   font-size: 1.05rem;
   font-weight: 500;
   transition: all 0.3s ease;
+  animation: slideIn 0.4s ease both;
+}
+.answer:nth-child(1) { animation-delay: 0.05s; }
+.answer:nth-child(2) { animation-delay: 0.12s; }
+.answer:nth-child(3) { animation-delay: 0.19s; }
+.answer:nth-child(4) { animation-delay: 0.26s; }
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 .answer:hover {
   border-color: var(--accent);
