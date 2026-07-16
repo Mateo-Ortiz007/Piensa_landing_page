@@ -20,6 +20,9 @@ const winText = document.getElementById("winText");
 let score = 0;
 let remaining = 0;
 let selected = null; // para modo táctil (tap)
+let started = false;
+let finished = false;
+window.isGameActive = () => started && !finished;
 
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
@@ -87,6 +90,7 @@ document.querySelectorAll(".bin-drop").forEach((drop) => {
 
 function place(chip, binCat, drop) {
   if (chip.classList.contains("correct")) return;
+  started = true;
   chip.classList.remove("dragging");
 
   if (chip.dataset.cat === binCat) {
@@ -105,6 +109,7 @@ function place(chip, binCat, drop) {
 }
 
 function win() {
+  finished = true;
   winText.textContent = `Clasificaste correctamente las ${especies.length} especies del bosque. ¡Bien hecho!`;
   winMessage.classList.add("show");
 }
@@ -113,6 +118,8 @@ function reset() {
   score = 0;
   remaining = especies.length;
   selected = null;
+  started = false;
+  finished = false;
   scoreEl.textContent = "0";
   remainingEl.textContent = remaining;
   winMessage.classList.remove("show");

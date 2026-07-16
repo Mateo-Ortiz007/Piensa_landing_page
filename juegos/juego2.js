@@ -23,6 +23,8 @@ let lock = false;
 let timer = null;
 let seconds = 0;
 let started = false;
+let finished = false;
+window.isGameActive = () => started && !finished;
 
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
@@ -112,6 +114,7 @@ function checkMatch() {
 
 function win() {
   clearInterval(timer);
+  finished = true;
   winText.textContent = `Completaste las ${vegetales.length} parejas en ${moves} movimientos y ${seconds} segundos.`;
   winMessage.classList.add("show");
 }
@@ -122,6 +125,7 @@ function reset() {
   matched = 0;
   seconds = 0;
   started = false;
+  finished = false;
   flipped = [];
   lock = false;
   movesEl.textContent = "0";

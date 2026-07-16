@@ -42,6 +42,9 @@ const questions = [
 ];
 let index = 0,
   score = 0;
+let started = false,
+  finished = false;
+window.isGameActive = () => started && !finished;
 const qNum = document.getElementById("qnum");
 const qBox = document.getElementById("question");
 const ansBox = document.getElementById("answers");
@@ -69,6 +72,7 @@ function render() {
 }
 
 function onAnswer(e) {
+  started = true;
   const chosen = Number(e.currentTarget.dataset.i);
   const correct = questions[index].correct;
   if (chosen === correct) {
@@ -88,12 +92,15 @@ document.getElementById("nextBtn").addEventListener("click", () => {
     index++;
     render();
   } else {
+    finished = true;
     scoreP.textContent = `✓ Terminado — Puntaje final: ${score} / ${questions.length}`;
   }
 });
 document.getElementById("restartBtn").addEventListener("click", () => {
   index = 0;
   score = 0;
+  started = false;
+  finished = false;
   render();
 });
 render();
